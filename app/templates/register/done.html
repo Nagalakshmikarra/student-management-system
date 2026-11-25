@@ -1,0 +1,9 @@
+{% extends "base_public.html" %}
+{% block content %}
+<div class="card-sms p-5 text-center">
+  <h3 class="text-success fw-bold">Application submitted</h3>
+  <div class="ref-big my-4">{{ ref }}</div>
+  <p class="lead">Save this number to track your application</p>
+  <a href="/register/status?ref={{ ref }}" class="btn btn-navy">Track status</a>
+</div>
+{% endblock %}

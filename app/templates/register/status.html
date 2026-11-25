@@ -1,0 +1,32 @@
+{% extends "base_public.html" %}
+{% block content %}
+<div class="card-sms p-4 mx-auto" style="max-width:720px">
+  <h4 class="fw-bold mb-3">Track your application</h4>
+  <form method="get" action="/register/status" class="d-flex gap-2 mb-4">
+    <input name="ref" class="form-control" placeholder="REG-2026-00001" value="{{ ref or '' }}" required>
+    <button class="btn btn-navy">Check</button>
+  </form>
+
+  {% if not_found %}
+    <div class="alert alert-danger">No application found with that reference number.</div>
+  {% elif reg %}
+    {% set s = reg.status.value %}
+    <p><strong>{{ reg.full_name }}</strong> &middot; {{ dept.code }} &middot; <span class="pill pill-{{ s }}">{{ s|capitalize }}</span></p>
+
+    {% if s == 'pending' %}
+      <div class="progress mb-2" style="height:22px"><div class="progress-bar bg-warning" style="width:66%">With {{ dept.code }} HOD</div></div>
+      <small class="text-muted">Submitted &rarr; With {{ dept.code }} HOD &rarr; Approved</small>
+    {% elif s == 'approved' %}
+      <div class="progress mb-2" style="height:22px"><div class="progress-bar bg-success" style="width:100%">Approved</div></div>
+      <div class="alert alert-success mt-3">Your roll number is <strong>{{ roll }}</strong>. Log in with it as username. The HOD will share your temporary password.</div>
+    {% elif s == 'rejected' %}
+      <div class="progress mb-2" style="height:22px"><div class="progress-bar bg-danger" style="width:100%">Rejected</div></div>
+      <div class="alert alert-danger mt-3"><strong>HOD remarks:</strong> {{ reg.hod_remarks or '-' }}</div>
+    {% elif s == 'correction' %}
+      <div class="progress mb-2" style="height:22px"><div class="progress-bar" style="width:66%;background:#3b3f8c">Sent back</div></div>
+      <div class="alert alert-warning mt-3"><strong>HOD remarks:</strong> {{ reg.hod_remarks or '-' }}</div>
+      <a href="/register/edit/{{ reg.reference_no }}" class="btn btn-navy">Edit and resubmit</a>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

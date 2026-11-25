@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+.env
+sms.db
+app/static/uploads/
+.pytest_cache/

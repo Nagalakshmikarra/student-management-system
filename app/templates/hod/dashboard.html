@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HOD Dashboard - Student Management System</title>
+
+    <link rel="stylesheet" href="/static/css/hod.css?v=3">
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">SMS</div>
+
+            <div class="brand-details">
+                <h2>Student Management</h2>
+                <small>College Portal</small>
+            </div>
+
+        </div>
+
+        <div class="menu-title">MENU</div>
+
+        <nav>
+
+            <a href="/hod" class="active">
+                <span class="menu-icon">◆</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/hod/registrations">
+                <span class="menu-icon">▤</span>
+                <span>Registrations</span>
+            </a>
+
+            <a href="/hod/students">
+                <span class="menu-icon">◉</span>
+                <span>Students</span>
+            </a>
+
+            <a href="/hod/mentor-groups">
+                <span class="menu-icon">♧</span>
+                <span>Mentor groups</span>
+            </a>
+
+            <a href="/hod/subjects">
+                <span class="menu-icon">▦</span>
+                <span>Subjects</span>
+            </a>
+
+            <a href="/hod/leaves">
+                <span class="menu-icon">✉</span>
+                <span>Leave requests</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOP HEADER -->
+        <header class="topbar">
+
+            <h2>HOD dashboard</h2>
+
+            <div class="header-right">
+
+                <strong>CSE Head of Department</strong>
+
+                <span class="role-badge">HOD</span>
+
+                <a href="/logout" class="logout">Logout</a>
+
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD BODY -->
+        <section class="content">
+
+            <!-- WELCOME SECTION -->
+            <div class="welcome">
+
+                <h1>
+                    Welcome, CSE Head of Department
+                </h1>
+
+                <p>
+                    CSE - Computer Science and Engineering
+                </p>
+
+                <a href="/hod/registrations" class="primary-btn">
+                    Review registrations
+                </a>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+            <div class="stats-grid">
+
+                <!-- PENDING -->
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Pending
+                    </div>
+
+                    <h2>{{ stats.pending }}</h2>
+
+                    <p>Awaiting your decision</p>
+
+                </div>
+
+
+                <!-- APPROVED -->
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Approved this year
+                    </div>
+
+                    <h2>{{ stats.approved }} / 120</h2>
+
+                    <p>Against department intake</p>
+
+                </div>
+
+
+                <!-- SENT BACK -->
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Sent back
+                    </div>
+
+                    <h2>{{ stats.correction }}</h2>
+
+                    <p>Awaiting student correction</p>
+
+                </div>
+
+
+                <!-- REJECTED -->
+                <div class="stat-card">
+
+                    <div class="stat-title">
+                        Rejected
+                    </div>
+
+                    <h2>{{ stats.rejected }}</h2>
+
+                    <p>Closed applications</p>
+
+                </div>
+
+            </div>
+
+
+            <!-- RECENT REGISTRATIONS -->
+            <div class="table-card">
+
+                <div class="table-heading">
+
+                    <div>
+                        <h2>Recent Registrations</h2>
+                        <p>Latest student applications</p>
+                    </div>
+
+                    <a href="/hod/registrations">
+                        View all →
+                    </a>
+
+                </div>
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Reference No.</th>
+                                <th>Student Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for r in recent_registrations %}
+
+                            <tr>
+
+                                <td>{{ r.reference_no }}</td>
+
+                                <td>{{ r.full_name }}</td>
+
+                                <td>{{ r.email }}</td>
+
+                                <td>
+                                    <span class="status {{ r.status.value }}">
+                                        {{ r.status.value|title }}
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                            {% else %}
+
+                            <tr>
+                                <td colspan="4" class="empty">
+                                    No registrations found.
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

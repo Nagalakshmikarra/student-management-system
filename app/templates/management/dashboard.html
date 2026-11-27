@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h1 class="h4 mb-3">Management dashboard</h1>
+    <p class="text-muted mb-4">
+      Welcome, {{ user.full_name }}. Use the Admin link in the sidebar to view,
+      search and manage every record in the system.
+    </p>
+    <a href="/admin" class="btn btn-primary">Open Admin</a>
+  </div>
+</div>
+{% endblock %}

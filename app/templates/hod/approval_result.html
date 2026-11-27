@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admission Approved</title>
+
+    <link rel="stylesheet" href="/static/css/hod.css">
+
+    <style>
+        body {
+            background: #f4f6fa;
+        }
+
+        .approval-card {
+            max-width: 680px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.07);
+        }
+
+        .approval-card h2 {
+            color: #168451;
+            margin-bottom: 10px;
+        }
+
+        .approval-detail {
+            background: #f4f6fa;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 8px;
+        }
+
+        .approval-detail span {
+            display: block;
+            color: #65738a;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .approval-detail strong {
+            font-size: 17px;
+            color: #172b4d;
+            overflow-wrap: anywhere;
+        }
+
+        .approval-warning {
+            padding: 14px;
+            background: #fff3cd;
+            color: #795600;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .password-note {
+            color: #a33;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #244f91;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .back-link:hover {
+            background: #193c72;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="approval-card">
+
+    <h2>✓ Registration Approved!</h2>
+
+    <p>Student account and academic placement created successfully.</p>
+
+    <div class="approval-detail">
+        <span>Roll Number</span>
+        <strong>{{ result.roll_number }}</strong>
+    </div>
+
+    <div class="approval-detail">
+        <span>Student Login Username</span>
+        <strong>{{ result.username }}</strong>
+    </div>
+
+    <div class="approval-detail">
+        <span>Temporary Password</span>
+        <strong>{{ result.temporary_password }}</strong>
+    </div>
+
+    <div class="approval-detail">
+        <span>Section</span>
+        <strong>{{ result.section }}</strong>
+    </div>
+
+    <div class="approval-detail">
+        <span>Mentor Group</span>
+        <strong>{{ result.mentor_group or "Not assigned" }}</strong>
+    </div>
+
+    <div class="approval-detail">
+        <span>Mentor Name</span>
+        <strong>{{ result.mentor_name or "Not assigned" }}</strong>
+    </div>
+
+    {% if result.mentor_warning %}
+        <div class="approval-warning">
+            {{ result.mentor_warning }}
+        </div>
+    {% endif %}
+
+    <p class="password-note">
+        Important: Save these credentials securely. The temporary password
+        is shown on this result page. The student must change it during
+        the first login.
+    </p>
+
+    <a href="/hod/registrations" class="back-link">
+        Back to Registrations
+    </a>
+
+</div>
+
+</body>
+</html>

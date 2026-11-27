@@ -1,8 +1,8 @@
-# app/models/registration.py
 
 from datetime import date, datetime
 from enum import Enum
 
+from pydantic import NaiveDatetime
 from sqlmodel import SQLModel, Field
 
 
@@ -38,7 +38,7 @@ class Registration(SQLModel, table=True):
 
     status: RegistrationStatus = Field(default=RegistrationStatus.pending)
     hod_remarks: str | None = None
-    submitted_at: datetime = Field(default_factory=datetime.utcnow)
-    decided_at: datetime | None = None
+    submitted_at: NaiveDatetime = Field(default_factory=datetime.utcnow)
+    decided_at: NaiveDatetime | None = None
     decided_by_user_id: int | None = Field(default=None, foreign_key="user.id")
     student_id: int | None = Field(default=None, foreign_key="student.id")

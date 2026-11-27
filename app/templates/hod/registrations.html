@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD - Registrations</title>
+
+    <link rel="stylesheet" href="/static/css/hod.css">
+
+    <style>
+        .registrations-content {
+            padding: 25px;
+        }
+
+        .registrations-content h1 {
+            color: #172b4d;
+            margin-bottom: 8px;
+        }
+
+        .registrations-content p {
+            color: #68778d;
+        }
+
+        .table-container {
+            margin-top: 25px;
+            overflow-x: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 3px 15px rgba(0,0,0,.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1050px;
+        }
+
+        th, td {
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9edf3;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f4f6fa;
+            color: #344563;
+            font-weight: 600;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pending {
+            background: #fff2cc;
+            color: #8a6500;
+        }
+
+        .approved {
+            background: #d9f5e6;
+            color: #137544;
+        }
+
+        .rejected {
+            background: #ffe0e0;
+            color: #b42318;
+        }
+
+        .correction {
+            background: #e7e9ff;
+            color: #4246a5;
+        }
+
+        .approve-btn {
+            background: #168451;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .approve-btn:hover {
+            background: #106b40;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 35px;
+            color: #758197;
+        }
+
+        .reference {
+            font-weight: 600;
+            color: #244f91;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="registrations-content">
+
+    <h1>Student Registrations</h1>
+    <p>Review and approve applications from your department.</p>
+
+    <div class="table-container">
+
+        {% if registrations %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Reference No.</th>
+                    <th>Student Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Parent Name</th>
+                    <th>Quota</th>
+                    <th>10th %</th>
+                    <th>Inter %</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for registration in registrations %}
+
+                <tr>
+                    <td class="reference">
+                        {{ registration.reference_no }}
+                    </td>
+
+                    <td>{{ registration.full_name }}</td>
+
+                    <td>{{ registration.phone }}</td>
+
+                    <td>{{ registration.email }}</td>
+
+                    <td>{{ registration.parent_name }}</td>
+
+                    <td>{{ registration.quota }}</td>
+
+                    <td>{{ registration.tenth_percent }}%</td>
+
+                    <td>{{ registration.inter_percent }}%</td>
+
+                    <td>
+                        {% if registration.status.value == "pending" %}
+                            <span class="status pending">Pending</span>
+
+                        {% elif registration.status.value == "approved" %}
+                            <span class="status approved">Approved</span>
+
+                        {% elif registration.status.value == "rejected" %}
+                            <span class="status rejected">Rejected</span>
+
+                        {% elif registration.status.value == "correction" %}
+                            <span class="status correction">Correction</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ registration.submitted_at.strftime("%d-%m-%Y") }}
+                    </td>
+
+                    <td>
+                        {% if registration.status.value == "pending" %}
+
+                            <form
+                                method="post"
+                                action="/hod/registrations/{{ registration.id }}/approve"
+                                onsubmit="return confirm('Approve this registration and create the student login?');"
+                            >
+                                <button
+                                    type="submit"
+                                    class="approve-btn"
+                                >
+                                    Approve
+                                </button>
+                            </form>
+
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+
+            <div class="empty-message">
+                <h3>No registrations found</h3>
+                <p>There are currently no registrations for your department.</p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

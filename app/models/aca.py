@@ -1,9 +1,9 @@
-# app/models/aca.py
 
-from datetime import date, datetime
+from datetime import date
 from enum import Enum
 
 from sqlmodel import SQLModel, Field
+from sqlalchemy import UniqueConstraint
 
 
 class StudentStatus(str, Enum):
@@ -66,7 +66,11 @@ class Student(SQLModel, table=True):
     department_id: int = Field(foreign_key="department.id", index=True)
     batch_id: int = Field(foreign_key="batch.id")
     section_id: int = Field(foreign_key="section.id", index=True)
-    mentor_group_id: int | None = Field(default=None, foreign_key="mentor_group.id", index=True)
+    mentor_group_id: int | None = Field(
+        default=None,
+        foreign_key="mentor_group.id",
+        index=True,
+    )
     quota: str = Field(max_length=30)
     admission_year: int
     status: StudentStatus = Field(default=StudentStatus.active)
@@ -95,6 +99,14 @@ class TeachingAssignment(SQLModel, table=True):
 
 class RollCounter(SQLModel, table=True):
     __tablename__ = "roll_counter"
+
+    __table_args__ = (
+        UniqueConstraint(
+            "department_id",
+            "admission_year",
+            name="uq_roll_counter_department_year",
+        ),
+    )
 
     id: int | None = Field(default=None, primary_key=True)
     department_id: int = Field(foreign_key="department.id", index=True)

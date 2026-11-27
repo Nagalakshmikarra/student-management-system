@@ -3,6 +3,7 @@
 from datetime import date, datetime
 from enum import Enum
 
+from pydantic import NaiveDatetime
 from sqlmodel import SQLModel, Field
 
 
@@ -73,7 +74,7 @@ class HallTicket(SQLModel, table=True):
     exam_id: int = Field(foreign_key="exam.id")
     student_id: int = Field(foreign_key="student.id", index=True)
     ticket_no: str = Field(unique=True, max_length=40)
-    issued_at: datetime = Field(default_factory=datetime.utcnow)
+    issued_at: NaiveDatetime = Field(default_factory=datetime.utcnow)
 
 
 class LeaveRequest(SQLModel, table=True):
@@ -86,7 +87,7 @@ class LeaveRequest(SQLModel, table=True):
     reason: str
     status: LeaveStatus = LeaveStatus.pending
     decided_by_user_id: int | None = Field(default=None, foreign_key="user.id")
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: NaiveDatetime = Field(default_factory=datetime.utcnow)
 
 
 class Notice(SQLModel, table=True):
@@ -97,4 +98,4 @@ class Notice(SQLModel, table=True):
     body: str
     posted_by_user_id: int = Field(foreign_key="user.id")
     department_id: int | None = Field(default=None, foreign_key="department.id")
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: NaiveDatetime = Field(default_factory=datetime.utcnow)
